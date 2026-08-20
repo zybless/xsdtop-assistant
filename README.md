@@ -26,19 +26,15 @@
 <details open>
 <summary><strong>Codex</strong></summary>
 
-使用 GitHub：
+1. 打开 Codex 左侧的「插件」。
+2. 点击右上角「添加」，选择「添加市场」。
+3. 在「来源」中粘贴以下任意一个地址。
 
-```bash
-codex plugin marketplace add zybless/xsdtop-assistant
-codex plugin add xsdtop-assistant@xsdtop
-```
+   - GitHub：`zybless/xsdtop-assistant`
+   - Gitee：`https://gitee.com/zybless/xsdtop-assistant.git`
 
-无法访问 GitHub 时，使用 Gitee：
-
-```bash
-codex plugin marketplace add https://gitee.com/zybless/xsdtop-assistant.git
-codex plugin add xsdtop-assistant@xsdtop
-```
+4. 点击「添加市场」，进入 `xsdtop` 市场。
+5. 找到 `xsdtop 助手`，点击「安装插件」。
 
 安装完成后新建一个任务，对 Codex 说：`配置 xsdtop 访问密钥`。
 
