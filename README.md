@@ -40,18 +40,6 @@ codex plugin marketplace add https://gitee.com/zybless/xsdtop-assistant.git
 codex plugin add xsdtop-assistant@xsdtop
 ```
 
-<details>
-<summary>提示 <code>codex: command not found</code></summary>
-
-仅安装了 macOS 桌面版时，使用应用内置命令：
-
-```bash
-/Applications/ChatGPT.app/Contents/Resources/codex plugin marketplace add zybless/xsdtop-assistant
-/Applications/ChatGPT.app/Contents/Resources/codex plugin add xsdtop-assistant@xsdtop
-```
-
-</details>
-
 安装完成后新建一个任务，对 Codex 说：`配置 xsdtop 访问密钥`。
 
 </details>
