@@ -1,0 +1,31 @@
+{
+  "name": "xsdtop-assistant",
+  "version": "0.1.0",
+  "description": "面向教育内容工作流的多客户端本地 AI 助手插件。",
+  "author": {
+    "name": "xsdtop",
+    "url": "https://xsdtop.com"
+  },
+  "homepage": "https://xsdtop.com",
+  "repository": "https://github.com/zybless/xsdtop-assistant",
+  "keywords": ["xsdtop", "education", "question-bank"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "xsdtop 助手",
+    "shortDescription": "连接本地 AI 助手与受控业务能力",
+    "longDescription": "一个以 Skill、MCP 和访问密钥组成的多客户端助手。当前支持数学和物理内容的查询、整理、配图上传、录入前校验与确认入库，后续能力可以在同一个插件中持续扩展。",
+    "developerName": "xsdtop",
+    "category": "Education",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://xsdtop.com",
+    "defaultPrompt": [
+      "帮我分析当前学科的题库和标签情况。",
+      "把这份 Markdown 试卷整理并录入题库。",
+      "上传这些题目配图并替换正文链接。"
+    ],
+    "brandColor": "#080878",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  },
+  "mcpServers": "./.mcp.json"
+}

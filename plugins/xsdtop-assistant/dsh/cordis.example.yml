@@ -1,0 +1,16 @@
+# 将 <XSDTOP_PLUGIN_ROOT> 替换为本插件在当前电脑上的绝对路径。
+# 密钥可以首次使用时通过 configure_access_key 工具配置，无需写进本文件。
+- id: skill-filesystem
+  config:
+    customSkillDirs:
+      - '<XSDTOP_PLUGIN_ROOT>/skills'
+
+- id: xsdtop-mcp
+  name: '@deepseek-ai/dsh-mcp-client'
+  config:
+    serverName: xsdtop
+    transport: stdio
+    command: node
+    args:
+      - '<XSDTOP_PLUGIN_ROOT>/mcp-server/dist/server.mjs'
+    failOnStartupError: true

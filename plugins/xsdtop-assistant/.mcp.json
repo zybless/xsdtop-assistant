@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "xsdtop": {
+      "command": "./scripts/launch_xsdtop_mcp",
+      "args": [
+        "./mcp-server/dist/server.mjs"
+      ],
+      "cwd": ".",
+      "env_vars": [
+        "XSDTOP_ACCESS_KEY",
+        "XSDTOP_API_BASE_URL",
+        "XSDTOP_CONFIG",
+        "XSD_TEACHER_KEY",
+        "XSD_API_BASE_URL",
+        "XSD_TEACHER_CONFIG",
+        "CODEX_MCP_NODE_PATH",
+        "CODEX_BROWSER_USE_NODE_PATH",
+        "CODEX_ELECTRON_RESOURCES_PATH",
+        "CODEX_CLI_PATH",
+        "XDG_CACHE_HOME",
+        "HOME",
+        "USERPROFILE",
+        "LOCALAPPDATA",
+        "APPDATA",
+        "PATH"
+      ],
+      "startup_timeout_sec": 15,
+      "tool_timeout_sec": 180
+    }
+  }
+}
