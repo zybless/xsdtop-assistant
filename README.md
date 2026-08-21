@@ -24,7 +24,7 @@
 ## 安装
 
 <details open>
-<summary><strong>Codex</strong></summary>
+<summary><strong>Codex 桌面端（推荐）</strong></summary>
 
 1. 打开 Codex 左侧的「插件」。
 2. 点击右上角「添加」，选择「添加市场」。
@@ -41,7 +41,56 @@
 </details>
 
 <details>
-<summary><strong>Claude Code</strong></summary>
+<summary><strong>Codex CLI</strong></summary>
+
+本节仅适用于已经安装 Codex CLI 的用户。先在系统终端添加市场：
+
+使用 GitHub：
+
+```bash
+codex plugin marketplace add zybless/xsdtop-assistant
+```
+
+无法访问 GitHub 时，使用 Gitee：
+
+```bash
+codex plugin marketplace add https://gitee.com/zybless/xsdtop-assistant.git
+```
+
+随后在系统终端运行 `codex`，进入 Codex 后输入 `/plugins`，从 `xsdtop` 市场安装 `xsdtop 助手`。安装完成后新建一个会话，再配置访问密钥。
+
+</details>
+
+<details open>
+<summary><strong>Claude Code Desktop（推荐）</strong></summary>
+
+1. 打开 Claude Code Desktop，并进入一个本地 Code 会话。
+2. 在 Claude Code 的输入框中输入以下任意一条命令，只需添加一次市场。
+
+   使用 GitHub：
+
+   ```text
+   /plugin marketplace add zybless/xsdtop-assistant
+   ```
+
+   无法访问 GitHub 时，使用 Gitee：
+
+   ```text
+   /plugin marketplace add https://gitee.com/zybless/xsdtop-assistant.git
+   ```
+
+3. 点击输入框旁边的「+」，选择「Plugins」→「Add plugin」。
+4. 找到 `xsdtop 助手`，选择用户级安装，以便在所有本地项目中使用。
+5. 如果安装结果提示运行 `/reload-plugins`，在当前输入框中执行该命令。
+
+以上 `/plugin` 命令输入在 Claude Code Desktop 的会话中，不是在系统终端中执行。安装完成后新建一个会话，对 Claude Code 说：`配置 xsdtop 访问密钥`。
+
+</details>
+
+<details>
+<summary><strong>Claude Code CLI</strong></summary>
+
+以下命令在系统终端中执行。
 
 使用 GitHub：
 
@@ -68,12 +117,23 @@ claude plugin install xsdtop-assistant@xsdtop
 
 ## 更新
 
-更新市场后重新安装插件即可获取新版本：
+桌面端用户在插件管理页更新或重新安装插件即可。命令行用户可以先刷新市场，再重新安装插件。
+
+Codex CLI：
 
 ```bash
-codex plugin marketplace update xsdtop
+codex plugin marketplace upgrade xsdtop
 codex plugin add xsdtop-assistant@xsdtop
 ```
+
+Claude Code CLI：
+
+```bash
+claude plugin marketplace update xsdtop
+claude plugin install xsdtop-assistant@xsdtop
+```
+
+更新完成后请新建会话，使新版 Skill 和工具生效。
 
 ## 安全
 
