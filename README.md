@@ -111,7 +111,29 @@ claude plugin install xsdtop-assistant@xsdtop
 <details>
 <summary><strong>DeepSeek Harness</strong></summary>
 
-克隆 GitHub 或 Gitee 仓库，然后参考 [`dsh/cordis.example.yml`](./plugins/xsdtop-assistant/dsh/cordis.example.yml) 配置插件目录与 MCP 服务。
+请先安装 Node.js、pnpm 和当前版本的 DeepSeek Harness。以下命令在系统终端中执行。
+
+使用 GitHub：
+
+```bash
+dsh plugin --profile web add github:zybless/xsdtop-assistant
+```
+
+无法访问 GitHub 时，使用 Gitee：
+
+```bash
+dsh plugin --profile web add git+https://gitee.com/zybless/xsdtop-assistant.git
+```
+
+安装成功后重启 `dsh web`，再新建一个任务，对 DSH 说：`配置 xsdtop 访问密钥`。
+
+插件按 DSH Profile 安装。上面的命令安装到 `web` Profile；如果使用其他 Profile，请把 `web` 替换成对应名称。安装包会自动注册 xsdtop Skill 和 MCP 服务，不需要克隆仓库或手工编辑 `cordis.patch.yml`。
+
+如果平时通过 `npx @deepseek-ai/dsh` 启动 DSH，请同样替换上述命令开头的 `dsh`。卸载命令如下，执行后也需要重启对应 Profile：
+
+```bash
+dsh plugin --profile web remove @xsdtop/xsdtop-assistant
+```
 
 </details>
 
@@ -133,7 +155,13 @@ claude plugin marketplace update xsdtop
 claude plugin install xsdtop-assistant@xsdtop
 ```
 
-更新完成后请新建会话，使新版 Skill 和工具生效。
+DeepSeek Harness：
+
+```bash
+dsh plugin --profile web update @xsdtop/xsdtop-assistant
+```
+
+更新完成后请重启对应的 DSH Profile，并新建会话，使新版 Skill 和工具生效。
 
 ## 安全
 

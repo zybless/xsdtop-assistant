@@ -1,0 +1,32 @@
+{
+  "name": "@xsdtop/xsdtop-assistant",
+  "version": "0.1.0",
+  "description": "xsdtop question-bank assistant for Codex, Claude Code, and DeepSeek Harness",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zybless/xsdtop-assistant.git"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "files": [
+    "plugins/xsdtop-assistant/.claude-plugin",
+    "plugins/xsdtop-assistant/.codex-plugin",
+    "plugins/xsdtop-assistant/.mcp.json",
+    "plugins/xsdtop-assistant/assets",
+    "plugins/xsdtop-assistant/dsh/cordis.patch.yml",
+    "plugins/xsdtop-assistant/mcp-server/dist/server.mjs",
+    "plugins/xsdtop-assistant/scripts",
+    "plugins/xsdtop-assistant/skills"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./plugins/xsdtop-assistant/dsh/cordis.patch.yml"
+    }
+  }
+}

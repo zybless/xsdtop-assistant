@@ -1,0 +1,24 @@
+# DeepSeek Harness Profile Bundle layer for the assembled xsdtop-assistant
+# distribution repository. The package is installed under the profile's
+# node_modules, whose directory is the Loader tree's baseUrl.
+- insert:
+    - id: xsdtop-skill-filesystem
+      name: '@deepseek-ai/dsh-skill-filesystem'
+      config:
+        providerName: xsdtop
+        includeDefaultRoots: false
+        customSkillDirs:
+          - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@xsdtop/xsdtop-assistant/plugins/xsdtop-assistant/skills/', baseUrl))"
+
+    - id: xsdtop-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: xsdtop
+        transport: stdio
+        command: node
+        args:
+          - !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@xsdtop/xsdtop-assistant/plugins/xsdtop-assistant/mcp-server/dist/server.mjs', baseUrl))"
+        cwd: !!js "process.getBuiltinModule('node:url').fileURLToPath(new URL('node_modules/@xsdtop/xsdtop-assistant/plugins/xsdtop-assistant/', baseUrl))"
+        env: !!js "Object.fromEntries(['XSDTOP_ACCESS_KEY', 'XSDTOP_API_BASE_URL', 'XSDTOP_CONFIG', 'XSD_TEACHER_KEY', 'XSD_API_BASE_URL', 'XSD_TEACHER_CONFIG'].flatMap((key) => process.env[key] === undefined ? [] : [[key, process.env[key]]]))"
+        toolCallTimeoutMs: 180000
+        failOnStartupError: true
