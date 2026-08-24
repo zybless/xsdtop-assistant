@@ -11,6 +11,6 @@ dependencies:
     - type: "mcp"
       value: "mineru"
       description: "使用个人密钥进行 MinerU 精准文档解析；禁止使用免密快速模式"
-      transport: "streamable-http"
+      transport: "stdio"
 policy:
   allow_implicit_invocation: true
