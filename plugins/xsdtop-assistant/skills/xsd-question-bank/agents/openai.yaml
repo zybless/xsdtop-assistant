@@ -8,5 +8,9 @@ dependencies:
       value: "xsdtop"
       description: "xsdtop 题库查询、图片上传和题目录入工具"
       transport: "stdio"
+    - type: "mcp"
+      value: "mineru"
+      description: "使用个人密钥进行 MinerU 精准文档解析；禁止使用免密快速模式"
+      transport: "streamable-http"
 policy:
   allow_implicit_invocation: true
