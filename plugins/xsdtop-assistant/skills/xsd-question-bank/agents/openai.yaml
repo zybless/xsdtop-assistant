@@ -1,12 +1,16 @@
 interface:
   display_name: "xsdtop 题库操作"
-  short_description: "查询、整理并安全录入 xsdtop 数学或物理题目"
+  short_description: "查询、管理并安全录入 xsdtop 数学或物理题目"
   default_prompt: "Use $xsd-question-bank to organize and validate this paper before importing it into xsdtop."
 dependencies:
   tools:
     - type: "mcp"
       value: "xsdtop"
-      description: "xsdtop 题库查询、图片上传和题目录入工具"
+      description: "xsdtop 题库查询、管理、图片上传和题目录入工具"
       transport: "stdio"
+    - type: "mcp"
+      value: "mineru"
+      description: "使用个人密钥进行 MinerU 精准文档解析；禁止使用免密快速模式"
+      transport: "streamable-http"
 policy:
   allow_implicit_invocation: true
