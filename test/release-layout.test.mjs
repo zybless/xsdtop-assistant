@@ -59,3 +59,17 @@ test('committed MCP server is valid Node.js', () => {
   const result = spawnSync(process.execPath, ['--check', server], { encoding: 'utf8' })
   assert.equal(result.status, 0, result.stderr)
 })
+
+test('SQL remains hidden by default and is provided on explicit request', async () => {
+  const skill = await readFile(new URL('skills/xsd-question-bank/SKILL.md', pluginRoot), 'utf8')
+  const server = await readFile(new URL('mcp-server/dist/server.mjs', pluginRoot), 'utf8')
+
+  assert.match(skill, /Keep implementation details internal by default/)
+  assert.match(skill, /When the teacher explicitly asks for SQL[\s\S]*provide it/)
+  assert.match(skill, /Do not refuse merely because the answer exposes database table names/)
+  assert.match(skill, /Return complete executable SQL/)
+  assert.doesNotMatch(skill, /must not expose database table names, field names, SQL/)
+
+  assert.match(server, /\\u9ed8\\u8ba4\\u4e0d\\u4e3b\\u52a8\\u63d0\\u53ca/i)
+  assert.match(server, /\\u63d0\\u4f9b\\u5b8c\\u6574\\u53ef\\u6267\\u884c SQL/i)
+})
