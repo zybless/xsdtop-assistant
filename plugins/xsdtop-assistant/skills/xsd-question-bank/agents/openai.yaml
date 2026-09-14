@@ -10,7 +10,8 @@ dependencies:
       transport: "stdio"
     - type: "mcp"
       value: "mineru"
-      description: "使用个人密钥进行 MinerU 精准文档解析；禁止使用免密快速模式"
-      transport: "stdio"
+      description: "连接 MinerU 远程服务；本地文件通过官方网页上传并填写个人 Token，禁止使用免密快速模式"
+      transport: "streamable_http"
+      url: "https://mcp.mineru.net/mcp"
 policy:
   allow_implicit_invocation: true

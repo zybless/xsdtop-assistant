@@ -22,3 +22,12 @@
         env: !!js "Object.fromEntries(['XSDTOP_ACCESS_KEY', 'XSDTOP_API_BASE_URL', 'XSDTOP_CONFIG', 'XSD_TEACHER_KEY', 'XSD_API_BASE_URL', 'XSD_TEACHER_CONFIG'].flatMap((key) => process.env[key] === undefined ? [] : [[key, process.env[key]]]))"
         toolCallTimeoutMs: 180000
         failOnStartupError: true
+
+    - id: xsdtop-mineru-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: mineru
+        transport: streamable-http
+        url: https://mcp.mineru.net/mcp
+        toolCallTimeoutMs: 1200000
+        failOnStartupError: false

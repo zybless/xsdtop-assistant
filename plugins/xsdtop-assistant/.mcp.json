@@ -13,7 +13,6 @@
         "XSD_TEACHER_KEY",
         "XSD_API_BASE_URL",
         "XSD_TEACHER_CONFIG",
-        "MINERU_API_TOKEN",
         "CODEX_MCP_NODE_PATH",
         "CODEX_BROWSER_USE_NODE_PATH",
         "CODEX_ELECTRON_RESOURCES_PATH",
@@ -29,19 +28,8 @@
       "tool_timeout_sec": 180
     },
     "mineru": {
-      "command": "uvx",
-      "args": [
-        "mineru-open-mcp"
-      ],
-      "env_vars": [
-        "MINERU_API_TOKEN",
-        "XDG_CACHE_HOME",
-        "HOME",
-        "USERPROFILE",
-        "LOCALAPPDATA",
-        "APPDATA",
-        "PATH"
-      ],
+      "type": "http",
+      "url": "https://mcp.mineru.net/mcp",
       "startup_timeout_sec": 120,
       "tool_timeout_sec": 1200
     }

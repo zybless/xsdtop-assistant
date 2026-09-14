@@ -9,7 +9,7 @@
       "name": "xsdtop-assistant",
       "source": "./plugins/xsdtop-assistant",
       "description": "面向教育内容工作流的多客户端本地 AI 助手插件。",
-      "version": "0.2.0",
+      "version": "0.2.2",
       "author": {
         "name": "xsdtop"
       }

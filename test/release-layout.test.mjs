@@ -20,6 +20,9 @@ test('DSH bundle declares a complete installable layer', async () => {
   assert.match(patch, /id: xsdtop-mcp/)
   assert.match(patch, /name: '@deepseek-ai\/dsh-mcp-client'/)
   assert.match(patch, /toolCallTimeoutMs: 180000/)
+  assert.match(patch, /id: xsdtop-mineru-mcp[\s\S]*serverName: mineru[\s\S]*transport: streamable-http[\s\S]*url: https:\/\/mcp\.mineru\.net\/mcp/)
+  assert.match(patch, /toolCallTimeoutMs: 1200000/)
+  assert.doesNotMatch(patch, /uvx|mineru-open-mcp/)
   assert.match(patch, /node_modules\/@xsdtop\/xsdtop-assistant/)
   assert.doesNotMatch(patch, /XSDTOP_PLUGIN_ROOT|cordis\.example/)
 
@@ -32,26 +35,33 @@ test('client manifests share the release version', async () => {
   const claude = JSON.parse(await readFile(new URL('.claude-plugin/plugin.json', pluginRoot), 'utf8'))
   assert.equal(codex.version, packageManifest.version)
   assert.equal(claude.version, packageManifest.version)
+  const marketplace = JSON.parse(await readFile(new URL('.claude-plugin/marketplace.json', root), 'utf8'))
+  assert.equal(marketplace.plugins.find(plugin => plugin.name === codex.name).version, packageManifest.version)
 })
 
-test('MinerU uses the local stdio MCP without browser upload or bearer auth', async () => {
+test('MinerU uses remote HTTP and guides authenticated browser uploads without local dependencies', async () => {
   const mcp = JSON.parse(await readFile(new URL('.mcp.json', pluginRoot), 'utf8'))
   const mineru = mcp.mcpServers?.mineru
-  assert.equal(mineru?.command, 'uvx')
-  assert.deepEqual(mineru?.args, ['mineru-open-mcp'])
-  assert.ok(mineru?.env_vars?.includes('MINERU_API_TOKEN'))
+  assert.equal(mineru?.type, 'http')
+  assert.equal(mineru?.url, 'https://mcp.mineru.net/mcp')
+  for (const field of ['command', 'args', 'env', 'env_vars', 'cwd']) {
+    assert.equal(mineru?.[field], undefined)
+  }
   assert.ok(mineru?.startup_timeout_sec >= 120)
-  assert.equal(mineru?.url, undefined)
   assert.equal(mineru?.bearer_token_env_var, undefined)
+  assert.ok(!mcp.mcpServers.xsdtop.env_vars.includes('MINERU_API_TOKEN'))
 
   const skill = await readFile(new URL('skills/xsd-question-bank/SKILL.md', pluginRoot), 'utf8')
-  assert.match(skill, /call MinerU `parse_documents` directly/)
+  assert.match(skill, /call MinerU `open_upload_ui`/)
+  assert.match(skill, /`API Token` field/)
+  assert.match(skill, /Never pass a local path to remote `parse_documents`/)
+  assert.match(skill, /Do not block the upload guide waiting for `configured: true`/)
   assert.match(skill, /never open a browser automatically/i)
-  assert.doesNotMatch(skill, /call the MinerU `open_upload_ui` tool/)
+  assert.doesNotMatch(skill, /Never call `open_upload_ui`/)
 
   const agent = await readFile(new URL('skills/xsd-question-bank/agents/openai.yaml', pluginRoot), 'utf8')
-  assert.match(agent, /value: "mineru"[\s\S]*transport: "stdio"/)
-  assert.doesNotMatch(agent, /transport: "streamable-http"/)
+  assert.match(agent, /value: "mineru"[\s\S]*transport: "streamable_http"/)
+  assert.match(agent, /url: "https:\/\/mcp\.mineru\.net\/mcp"/)
 })
 
 test('committed MCP server is valid Node.js', () => {
