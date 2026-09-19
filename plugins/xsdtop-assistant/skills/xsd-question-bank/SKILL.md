@@ -1,6 +1,6 @@
 ---
 name: xsd-question-bank
-description: Query, organize, manage, upload images for, validate, and import xsdtop mathematics or physics questions and question lists when a user asks to work with the xsdtop question bank.
+description: Query, organize, manage, upload images for, validate, and import xsdtop physics, mathematics, or chemistry questions and question lists when a user asks to work with the xsdtop question bank.
 ---
 
 # xsdtop 题库操作
@@ -9,7 +9,9 @@ Use the `xsdtop` MCP tools for xsdtop question-bank operations. Do not bypass th
 
 ## Shared rules
 
-1. Call `get_access_profile` before the first question-bank operation. The key determines the subject; never ask the teacher for a subject number or override it.
+1. Call `get_access_profile` before the first question-bank operation.
+   - A single-subject key (物理, 数学, or 化学) determines the subject. Omit `subjectId` or pass the same value; never override it.
+   - A universal key (`subjectId` 0, shown as 通用) can work in any open subject. Determine the target subject from the teacher's request; if it is unclear, ask by subject name, never by number. Pass that `subjectId` (1 物理, 2 数学, 3 化学) on every subject-bound tool call and keep every query for the task restricted to that subject. `commit_question_import` reuses the subject locked at validation and takes no `subjectId`.
 2. If no key is configured, ask the teacher for the administrator-issued key and call `configure_access_key`. Never repeat, log, or include the key in the final response.
 3. Keep implementation details internal by default. Ordinary teacher-facing responses must use plain Chinese and must not volunteer database table names, field names, SQL, JSON, endpoint paths, internal IDs, or subject/type codes. This default does not apply when the teacher explicitly asks for SQL; follow the SQL workflow below and include every technical detail needed by the script.
 4. Query only the data needed to answer the question. Minimize personal information and prefer aggregation over bulk detail rows.

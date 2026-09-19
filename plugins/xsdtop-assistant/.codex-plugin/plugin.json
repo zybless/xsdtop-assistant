@@ -1,6 +1,6 @@
 {
   "name": "xsdtop-assistant",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "面向教育内容工作流的多客户端本地 AI 助手插件。",
   "author": {
     "name": "xsdtop",
@@ -13,7 +13,7 @@
   "interface": {
     "displayName": "xsdtop 助手",
     "shortDescription": "连接本地 AI 助手与受控业务能力",
-    "longDescription": "一个以 Skill、MCP 和访问密钥组成的多客户端助手。当前支持数学和物理题库查询、分组与容器管理、题目和题单编辑、批量公开隐藏、配图上传、录入前校验与确认入库，文档录题连接 MinerU 远程服务，通过官方网页上传并填写个人密钥进行精准解析，无需安装 MinerU、Python 或 uvx。",
+    "longDescription": "一个以 Skill、MCP 和访问密钥组成的多客户端助手。当前支持物理、数学和化学题库查询（单科密钥或通用密钥）、分组与容器管理、题目和题单编辑、批量公开隐藏、配图上传、录入前校验与确认入库，文档录题连接 MinerU 远程服务，通过官方网页上传并填写个人密钥进行精准解析，无需安装 MinerU、Python 或 uvx。",
     "developerName": "xsdtop",
     "category": "Education",
     "capabilities": ["Read", "Write"],

@@ -1,6 +1,6 @@
 {
   "name": "@xsdtop/xsdtop-assistant",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "xsdtop question-bank management assistant for Codex, Claude Code, and DeepSeek Harness",
   "license": "MIT",
   "repository": {

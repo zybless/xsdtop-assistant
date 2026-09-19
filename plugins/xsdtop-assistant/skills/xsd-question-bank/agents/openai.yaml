@@ -1,6 +1,6 @@
 interface:
   display_name: "xsdtop 题库操作"
-  short_description: "查询、管理并安全录入 xsdtop 数学或物理题目"
+  short_description: "查询、管理并安全录入 xsdtop 物理、数学或化学题目"
   default_prompt: "Use $xsd-question-bank to organize and validate this paper before importing it into xsdtop."
 dependencies:
   tools:
