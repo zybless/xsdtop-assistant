@@ -16,7 +16,9 @@
 
 从 0.3.0 起支持通用密钥：一把密钥可操作物理、数学、化学任一学科，每次写操作由助手明确指定学科；单科密钥用法不变。旧版插件会拒绝通用密钥，请先更新。
 
-从 0.2.2 起，PDF、Word 和扫描图片录题直接连接 MinerU 远程 MCP，用户无需安装 MinerU、Python 或 uvx。本地文件通过 MinerU 官方网页上传，在网页填写个人 Token 后进行精准解析，再把 Markdown 或结果包带回对话录题。
+从 0.3.1 起识别老师在网站「我的题库 → AI 密钥」自助签发的私库密钥：录题与传图落在老师自己的私人题库，题单只能新建或追加本人私题单，不能查库、不能操作公共题库。
+
+从 0.4.0 起，PDF、Word、PPT 和图片录题由插件在本机直接调用 MinerU 精准解析接口：自动上传文档、等待解析、下载并解压 Markdown 与配图，不再需要打开网页手动上传和复制结果，也无需安装 MinerU、Python 或 uvx。
 
 ### 设计特点
 
@@ -144,21 +146,18 @@ dsh plugin --profile web remove @xsdtop/xsdtop-assistant
 
 ## 文档录题（无需安装 MinerU）
 
-1. 在对话中提供试卷或请求录题，助手会获取 MinerU 官方上传网页的临时链接。
-2. 打开链接，上传文件，或填写可访问的文档 URL。
-3. 在 **API Token** 输入框填写个人密钥，扫描件勾选 **Enable OCR**，再点击 **Parse Documents**。密钥在 [MinerU Token 管理](https://mineru.net/apiManage/token) 创建。
-4. 解析完成后，使用 **Copy Markdown** 将结果带回对话；有配图时，优先提供 **Download ZIP** 下载的结果包。
-5. 助手整理题目并进行空跑校验，老师确认后正式入库。
+1. 第一次从文档录题时，助手会给出 [MinerU Token 管理](https://mineru.net/apiManage/token) 的创建步骤。创建个人 Token 后发给助手，插件先向 MinerU 校验（不消耗解析额度），通过后只保存在本机，不会回显。
+2. 之后直接提供试卷文件即可。插件把本机文档上传到 MinerU 精准解析接口（默认 `vlm` 模型，开启公式与表格识别），扫描件会开启 OCR；解析完成后把 `full.md` 和 `images/` 解压到文档旁边的“文件名_mineru”文件夹。
+3. 大文档一次等不完时，助手会用返回的任务编号继续获取结果，不会重复提交。
+4. 助手对照原文校对题目与公式，上传配图并空跑校验，老师确认后正式入库。
 
-本插件要求精准解析，请填写有效的个人 Token，不要使用免密快速模式。远程服务不能读取电脑上的文件路径，网页解析结果也不会自动回到对话。上传链接中的临时 `token` 用于进入上传页面，不是个人 API Token。
-
-Codex、Claude 和 DeepSeek Harness 均已内置远程连接，不需要额外粘贴 MCP 配置。本机环境变量不代表远端已经鉴权；`get_mineru_recording_setup` 的 `configured: null` 表示本机无法判断远端状态，并不会阻止获取上传链接。只有独立确认当前远程连接的个人 Token 与精准模式均生效时，才直接调用 URL 解析工具，否则也通过上述官方网页填写 Token 解析。
+本插件只使用精准解析，不使用免密快速模式。单个文档不超过 200MB，支持 PDF、DOC/DOCX、PPT/PPTX、PNG、JPG/JPEG；解析额度按老师的 MinerU 账号计算。MinerU 密钥默认保存在 `~/.xsdtop-assistant/mineru.json`（Windows 为 `%APPDATA%\xsdtop-assistant\mineru.json`），也可以用环境变量 `MINERU_API_TOKEN` 提供。
 
 ## 更新
 
 桌面端用户在插件管理页更新或重新安装插件即可。命令行用户可以先刷新市场，再重新安装插件。更新后新建会话。
 
-从旧版升级时，若曾手动添加过同名 `mineru` MCP，请先核对其来源，停用或移除多余的旧配置，避免继续调用本地 `uvx`。本次更新改变 MinerU 接入方式，市场的 Git 下载方式未改变。
+从 0.3.x 升级到 0.4.0 时，插件不再注册名为 `mineru` 的远程 MCP；若曾手动添加过同名 `mineru` MCP，请先核对其来源并停用或移除，避免助手继续走网页上传流程或调用本地 `uvx`。以前在 MinerU 网页里填写过的 Token 不会自动带过来，更新后第一次解析文档时按提示配置一次即可。市场的 Git 下载方式未改变。
 
 Codex CLI：
 
@@ -185,7 +184,7 @@ dsh plugin --profile web update @xsdtop/xsdtop-assistant
 ## 安全
 
 - 访问密钥仅保存在使用者本机，请勿提交到任何仓库或发送给他人。
-- 文档通过 MinerU 官方网页上传并解析，个人 MinerU Token 直接填写在该网页，不需要发送到对话或写入插件文件；插件不会自动打开浏览器。
+- 个人 MinerU Token 经 MinerU 校验后只保存在本机配置文件（权限 600），不写入插件文件；文档只上传到 MinerU 官方解析接口。插件不会自动打开浏览器。
 - 正式录入前必须先完成空跑校验，并由使用者明确确认。
 - 权限、学科和可用功能全部由服务端校验，插件不能自行扩大权限。
 

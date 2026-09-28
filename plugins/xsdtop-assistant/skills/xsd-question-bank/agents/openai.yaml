@@ -6,12 +6,7 @@ dependencies:
   tools:
     - type: "mcp"
       value: "xsdtop"
-      description: "xsdtop 题库查询、管理、图片上传和题目录入工具"
+      description: "xsdtop 题库查询、管理、图片上传、题目录入，以及用老师的 MinerU 密钥在本机直接精准解析 PDF、Word、PPT 和图片"
       transport: "stdio"
-    - type: "mcp"
-      value: "mineru"
-      description: "连接 MinerU 远程服务；本地文件通过官方网页上传并填写个人 Token，禁止使用免密快速模式"
-      transport: "streamable_http"
-      url: "https://mcp.mineru.net/mcp"
 policy:
   allow_implicit_invocation: true
