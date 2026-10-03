@@ -20,6 +20,8 @@
 
 从 0.4.0 起，PDF、Word、PPT 和图片录题由插件在本机直接调用 MinerU 精准解析接口：自动上传文档、等待解析、下载并解压 Markdown 与配图，不再需要打开网页手动上传和复制结果，也无需安装 MinerU、Python 或 uvx。
 
+从 0.5.0 起，助手在文档录题时会读取网站当前学科的启用标签树，逐题建议标签和难度、计算量、创新度、推荐度、优雅度。录题空跑会核对标签并返回逐题预览；老师确认后入库。证据不足的项目留空，网站复用已有题时保留原评分。
+
 ### 设计特点
 
 - 一套插件同时适配 Codex、Claude Code 与 DeepSeek Harness。
@@ -149,7 +151,7 @@ dsh plugin --profile web remove @xsdtop/xsdtop-assistant
 1. 第一次从文档录题时，助手会给出 [MinerU Token 管理](https://mineru.net/apiManage/token) 的创建步骤。创建个人 Token 后发给助手，插件先向 MinerU 校验（不消耗解析额度），通过后只保存在本机，不会回显。
 2. 之后直接提供试卷文件即可。插件把本机文档上传到 MinerU 精准解析接口（默认 `vlm` 模型，开启公式与表格识别），扫描件会开启 OCR；解析完成后把 `full.md` 和 `images/` 解压到文档旁边的“文件名_mineru”文件夹。
 3. 大文档一次等不完时，助手会用返回的任务编号继续获取结果，不会重复提交。
-4. 助手对照原文校对题目与公式，上传配图并空跑校验，老师确认后正式入库。
+4. 助手对照原文校对题目与公式，从网站标签树匹配标签并按统一标尺评估五项指标，上传配图并空跑校验。老师审核逐题建议并确认后正式入库。
 
 本插件只使用精准解析，不使用免密快速模式。单个文档不超过 200MB，支持 PDF、DOC/DOCX、PPT/PPTX、PNG、JPG/JPEG；解析额度按老师的 MinerU 账号计算。MinerU 密钥默认保存在 `~/.xsdtop-assistant/mineru.json`（Windows 为 `%APPDATA%\xsdtop-assistant\mineru.json`），也可以用环境变量 `MINERU_API_TOKEN` 提供。
 

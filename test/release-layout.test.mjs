@@ -63,6 +63,18 @@ test('MinerU parsing runs through the local xsdtop server with the teacher token
   assert.ok(server.includes('https://mineru.net/api/v4'))
 })
 
+test('document metadata workflow ships the label tool and scoring guidance', async () => {
+  const skill = await readFile(new URL('skills/xsd-question-bank/SKILL.md', pluginRoot), 'utf8')
+  const guidance = await readFile(new URL('skills/xsd-question-bank/references/question-metadata.md', pluginRoot), 'utf8')
+  const server = await readFile(new URL('mcp-server/dist/server.mjs', pluginRoot), 'utf8')
+  assert.match(skill, /list_question_labels/)
+  for (const metric of ['难度', '计算量', '创新度', '推荐度', '优雅度']) {
+    assert.ok(guidance.includes(`| ${metric} |`), `missing ${metric} rubric`)
+  }
+  assert.ok(server.includes('list_question_labels'))
+  assert.ok(server.includes('/api/label/all/subject/'))
+})
+
 test('committed MCP server is valid Node.js', () => {
   const server = fileURLToPath(new URL('mcp-server/dist/server.mjs', pluginRoot))
   const result = spawnSync(process.execPath, ['--check', server], { encoding: 'utf8' })
