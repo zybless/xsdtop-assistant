@@ -1,6 +1,6 @@
 {
   "name": "xsdtop-assistant",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "面向教育内容工作流的多客户端本地 AI 助手插件。",
   "author": {
     "name": "xsdtop",
@@ -8,22 +8,31 @@
   },
   "homepage": "https://xsdtop.com",
   "repository": "https://github.com/zybless/xsdtop-assistant",
-  "keywords": ["xsdtop", "education", "question-bank"],
+  "keywords": [
+    "xsdtop",
+    "education",
+    "question-bank",
+    "grading"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "xsdtop 助手",
     "shortDescription": "连接本地 AI 助手与受控业务能力",
-    "longDescription": "一个以 Skill、MCP 和访问密钥组成的多客户端助手。支持物理、数学和化学题库查询、分组与容器管理、题目和题单编辑、批量公开隐藏、配图上传、录入前校验与确认入库。文档录题在本机调用 MinerU 精准解析；校对后从网站检索当前学科标签树，逐题建议标签和五项指标，老师审核后入库。",
+    "longDescription": "一个以 Skill、MCP 和访问密钥组成的多客户端助手。支持物理、数学和化学题库查询、分组与容器管理、题目和题单编辑、批量公开隐藏、配图上传、录入前校验与确认入库。文档录题在本机调用 MinerU 精准解析；校对后从网站检索当前学科标签树，逐题建议标签和五项指标，老师审核后入库。支持集训营测评原卷、答案解析和答卷批量下载，由当前本地 Agent 阅卷，校验后将逐题结果、AI 原判和报告回写网站。",
     "developerName": "xsdtop",
     "category": "Education",
-    "capabilities": ["Read", "Write"],
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://xsdtop.com",
     "defaultPrompt": [
       "帮我分析当前学科的题库和标签情况。",
       "把这份 Markdown 试卷整理并录入题库。",
       "把这份 PDF 试卷通过 MinerU 精准解析，逐题打标签和评估指标后录入题库。",
       "上传这些题目配图并替换正文链接。",
-      "批量隐藏这些题目，并调整题单里的分值和顺序。"
+      "批量隐藏这些题目，并调整题单里的分值和顺序。",
+      "下载指定集训营测评，逐份批改答卷并将成绩和报告回写网站。"
     ],
     "brandColor": "#080878",
     "composerIcon": "./assets/logo.png",

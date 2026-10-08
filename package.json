@@ -1,7 +1,7 @@
 {
   "name": "@xsdtop/xsdtop-assistant",
-  "version": "0.5.0",
-  "description": "xsdtop question-bank management assistant for Codex, Claude Code, and DeepSeek Harness",
+  "version": "0.6.0",
+  "description": "xsdtop question-bank management and local camp grading assistant for Codex, Claude Code, and DeepSeek Harness",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -19,7 +19,8 @@
     "plugins/xsdtop-assistant/dsh/cordis.patch.yml",
     "plugins/xsdtop-assistant/mcp-server/dist/server.mjs",
     "plugins/xsdtop-assistant/scripts",
-    "plugins/xsdtop-assistant/skills"
+    "plugins/xsdtop-assistant/skills",
+    "docs/camp-grading-design.md"
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0"
