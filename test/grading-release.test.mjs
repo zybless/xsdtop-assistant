@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const root = new URL('../', import.meta.url)
 const plugin = new URL('plugins/xsdtop-assistant/', root)
-const gradingTools = ['list_camp_assessments', 'download_camp_grading_package', 'validate_camp_grading_results', 'commit_camp_grading_results']
+const gradingTools = ['list_camp_assessments', 'download_camp_grading_package', 'validate_camp_grading_results', 'commit_camp_grading_results', 'list_class_grading_tasks', 'download_class_grading_package', 'validate_class_grading_results', 'commit_class_grading_results']
 
 test('release includes the local grading skill and result contract', async () => {
   const skill = await readFile(new URL('skills/xsd-grading/SKILL.md', plugin), 'utf8')
@@ -52,14 +52,19 @@ test('distributed stdio MCP advertises grading tools and the explicit commit bou
   const timer = setTimeout(() => child.kill(), 8000)
   try {
     const initialized = await request('initialize', { protocolVersion: '2025-03-26', capabilities: {}, clientInfo: { name: 'release-smoke', version: '1' } })
-    assert.equal(initialized.serverInfo.version, '0.6.0')
+    assert.equal(initialized.serverInfo.version, '0.7.0')
     child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n')
     const listed = await request('tools/list', {})
     for (const name of gradingTools) assert.ok(listed.tools.some(tool => tool.name === name), `missing runtime tool ${name}`)
-    const commit = listed.tools.find(tool => tool.name === 'commit_camp_grading_results')
-    assert.equal(commit.inputSchema.properties.confirm.const, true)
-    assert.equal(commit.annotations.destructiveHint, true)
-    assert.equal(listed.tools.find(tool => tool.name === 'validate_camp_grading_results').annotations.destructiveHint, false)
+    for (const family of ['camp', 'class']) {
+      const commit = listed.tools.find(tool => tool.name === `commit_${family}_grading_results`)
+      assert.equal(commit.inputSchema.properties.confirm.const, true)
+      assert.equal(commit.annotations.destructiveHint, true)
+      assert.equal(listed.tools.find(tool => tool.name === `validate_${family}_grading_results`).annotations.destructiveHint, false)
+    }
+    const download = listed.tools.find(tool => tool.name === 'download_class_grading_package')
+    assert.ok(download.inputSchema.required.includes('taskType'))
+    assert.deepEqual(download.inputSchema.properties.taskType.enum, ['assessments', 'homeworks'])
   } finally {
     clearTimeout(timer)
     lines.close()
