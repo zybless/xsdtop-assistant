@@ -1,7 +1,7 @@
 {
   "name": "@xsdtop/xsdtop-assistant",
-  "version": "0.6.0",
-  "description": "xsdtop question-bank management and local camp grading assistant for Codex, Claude Code, and DeepSeek Harness",
+  "version": "0.7.0",
+  "description": "xsdtop question-bank management and local class and camp grading assistant for Codex, Claude Code, and DeepSeek Harness",
   "license": "MIT",
   "repository": {
     "type": "git",
