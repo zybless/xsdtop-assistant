@@ -11,7 +11,7 @@ description: Download xsdtop class homework, class assessments, camp assessments
 
 - 先读取 `get_access_profile`。班级下载需要 `class-grading:read`、回写需要 `class-grading:import`；集训营对应 `camp-grading:read`、`camp-grading:import`。老师可在「我的题库 → AI 密钥」显式勾选，管理员也可在「AI 开放通道 → 修改绑定与能力 → 本地阅卷」开通，必须绑定教师账号。旧密钥不自动授权，编辑现有密钥不换密钥明文。班级查看需要管理权限，回写需要负责人权限；集训营需要助教及以上权限。网站逐次核验租户、学科及绑定教师权限。
 - 班级用 `list_class_grading_tasks` 查询，确定 `taskType`（`homeworks` 作业、`assessments` 测评）和 `taskId`，再用 `download_class_grading_package`；集训营用 `list_camp_assessments` 与 `download_camp_grading_package`。资源不明确时读取老师提供的网址或询问，不猜编号。
-- 使用对应下载工具和专属空目录；同目录同参数可以恢复下载。默认下载未批答卷；老师要求重阅时显式传入提交编号。已经人工复核的答卷会被跳过。
+- 使用对应下载工具和专属空目录；同目录同参数可以恢复下载。同一 MCP 服务会串行处理同目录操作；不同会话或 MCP 进程必须使用各自目录，不能同时修改同一个资料包。默认下载未批答卷；老师要求重阅时显式传入提交编号。已经人工复核的答卷会被跳过。
 - `completed=false` 时继续恢复下载，处理列出的失败。公共原卷与解析已完整时，可以先按提交编号批改已下载完整的答卷；缺文件的提交单独报错，不能当成空白。超过100份或500MB时分批。
 - 阅读目录中的 `manifest.json`、`reference.md`、`rubric.json`、原卷、解析和答卷。提交编号是唯一匹配依据，姓名只用于展示。不得修改原件、清单或快照版本。
 

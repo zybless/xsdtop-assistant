@@ -52,7 +52,7 @@ test('distributed stdio MCP advertises grading tools and the explicit commit bou
   const timer = setTimeout(() => child.kill(), 8000)
   try {
     const initialized = await request('initialize', { protocolVersion: '2025-03-26', capabilities: {}, clientInfo: { name: 'release-smoke', version: '1' } })
-    assert.equal(initialized.serverInfo.version, '0.7.0')
+    assert.equal(initialized.serverInfo.version, JSON.parse(await readFile(new URL('package.json', root), 'utf8')).version)
     child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n')
     const listed = await request('tools/list', {})
     for (const name of gradingTools) assert.ok(listed.tools.some(tool => tool.name === name), `missing runtime tool ${name}`)
