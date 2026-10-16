@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { access, readFile } from 'node:fs/promises'
+import { access, readFile, readdir } from 'node:fs/promises'
 import { spawnSync } from 'node:child_process'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -37,6 +37,26 @@ test('client manifests share the release version', async () => {
   assert.equal(claude.version, packageManifest.version)
   const marketplace = JSON.parse(await readFile(new URL('.claude-plugin/marketplace.json', root), 'utf8'))
   assert.equal(marketplace.plugins.find(plugin => plugin.name === codex.name).version, packageManifest.version)
+})
+
+test('handout-lab ships an authorization entrypoint and excludes the private skill bundle', async () => {
+  const skill = await readFile(new URL('skills/xsd-handout-lab/SKILL.md', pluginRoot), 'utf8')
+  const server = await readFile(new URL('mcp-server/dist/server.mjs', pluginRoot), 'utf8')
+  assert.match(skill, /prepare_handout_lab/)
+  assert.match(skill, /每次请求仍需先调用该工具检查当前权限/)
+  assert.match(skill, /失败、缺失、超时或后台拒绝时停止/)
+  assert.ok(server.includes('prepare_handout_lab'))
+  assert.ok(server.includes('/api/ai-open/handout-lab/bundle'))
+  await assert.rejects(access(new URL('skills/handout-lab/SKILL.md', pluginRoot)))
+  const skillFolders = await readdir(new URL('skills/', pluginRoot))
+  assert.ok(skillFolders.includes('xsd-handout-lab'))
+  const pack = spawnSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], {
+    cwd: fileURLToPath(root), encoding: 'utf8'
+  })
+  assert.equal(pack.status, 0, pack.stderr)
+  const files = JSON.parse(pack.stdout)[0].files.map(file => file.path)
+  assert.ok(files.includes('plugins/xsdtop-assistant/skills/xsd-handout-lab/SKILL.md'))
+  assert.equal(files.some(path => path.endsWith('.zip') || path.includes('/scripts/kb_pull.py') || path.includes('/scripts/labcheck.mjs')), false)
 })
 
 test('MinerU parsing runs through the local xsdtop server with the teacher token', async () => {

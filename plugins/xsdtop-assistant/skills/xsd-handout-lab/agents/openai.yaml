@@ -1,0 +1,6 @@
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "xsdtop"
+      description: "检查讲义动画权限并领取原版 handout-lab 技能包"
+      transport: "stdio"
