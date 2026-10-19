@@ -1,6 +1,6 @@
 {
   "name": "@xsdtop/xsdtop-assistant",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "xsdtop question-bank management, local grading and permission-controlled handout-lab assistant for Codex, Claude Code, and DeepSeek Harness",
   "license": "MIT",
   "repository": {
@@ -17,11 +17,13 @@
     "plugins/xsdtop-assistant/.mcp.json",
     "plugins/xsdtop-assistant/assets",
     "plugins/xsdtop-assistant/dsh/cordis.patch.yml",
-    "plugins/xsdtop-assistant/mcp-server/dist/server.mjs",
+    "plugins/xsdtop-assistant/mcp-server/dist",
     "plugins/xsdtop-assistant/scripts",
     "plugins/xsdtop-assistant/skills",
     "docs/camp-grading-design.md",
-    "docs/handout-lab-design.md"
+    "docs/handout-lab-design.md",
+    "docs/question-metadata-design.md",
+    "docs/reliability-release.md"
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0"

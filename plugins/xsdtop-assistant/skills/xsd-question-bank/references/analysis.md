@@ -10,9 +10,11 @@
 - 可用标签：`label.deleted = 0 AND label.status = 1`。
 - 标签类型：1 阶段或体系，2 章节或目录，3 知识点。
 
-所有题目、题单和标签查询都必须包含当前学科条件。不要查询与老师问题无关的姓名、手机号、邮箱等个人信息。
+`sql:query` 是绑定管理员账号的数据库只读能力，服务端不按密钥学科隔离。任务中的题目、题单和标签查询仍必须包含当前学科条件，只查询回答问题必需的数据。不要查询与老师问题无关的姓名、手机号、邮箱等个人信息。私库密钥不能使用本接口；查找本人题单使用 `list_question_lists`。
 
 ## 常用分析顺序
+
+要逐题校对正文或提出修复时，读取 [content-review.md](content-review.md)；要复核具体标签或匹配资料与库内题目时，读取 [label-review.md](label-review.md)。统计覆盖率不等于标签正确性审计。
 
 老师询问题库或标签整体情况时，优先得到：
 
@@ -38,7 +40,7 @@ WHERE subject = {subjectId} AND is_deleted = 0
 ```
 
 ```sql
-SELECT l.id, l.name, l.type, COUNT(DISTINCT ql.question_id) AS question_count
+SELECT l.id, l.name, l.type, COUNT(DISTINCT q.id) AS question_count
 FROM label l
 LEFT JOIN question_label ql ON ql.label_id = l.id
 LEFT JOIN question q ON q.id = ql.question_id

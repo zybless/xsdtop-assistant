@@ -28,6 +28,14 @@
 
 网站保留 report_md、结构化 AI 原判、证据页码和逐题诊断；provider 固定 external-agent，model 为客户端报告的模型，不能证明真实推理身份。原教练说明保持原字段长度，导入批次和快照版本另存已有 result_json 的 externalContext。逐题权威成绩仍用原评分明细，教师修改后 AI 原判保留。
 
+本地报告质量增强复用现有结果协议，不新增工具、评分字段或数据库结构。下载另写 `report-guidelines.md` 并返回 `reportGuidelinesPath`，内容由插件内 `skills/xsd-grading/references/report-quality.md` 随构建打包，安装环境无需网站源码。Agent 按“逐题证据 → 诊断 → 整卷归纳”填写已有字段，复杂公式采用 Markdown 数学定界符，公开正文不包含 `referenceDoubt` 或成绩复述。
+
+站内整卷、切题与三科文档提示词对齐证据状态：真实空白才零分判错；无法辨认、缺页、题号无法匹配的分数与判定留空，任一题待复核时整卷成绩留空。站内文档入口兼容旧模型返回的零分/判错，但归一、快照和正式成绩仍清空。教师复核定分沿用原有锁分逻辑。本地使用 `itemNo/score`，站内使用 `sortOrder/gotScore`；本地不接收站内额外叙事字段，也不继承站内默认0.5分步长。两边均要求按证据填写诊断，不强凑亮点、根因或建议条数。
+
+PDF 有待复核题时显示“全卷成绩待复核”，另列已确认题目得分，不能把已确认部分标成全卷总分；全部待复核时不显示0/0或得分率。模板版本升为v12使旧缓存按现有机制失效。网页与小程序的行内公式限定宽度并可横向滚动，网页长表格也在自身容器内滚动。
+
+`validate_class_grading_results` 与 `validate_camp_grading_results` 在远端校验前执行本地质量检查，保留 `successes`、`failures`、`pending`，另返回 `reports` 数组，项结构为 `{submissionId, previewPath, qualityPath, quality: {errors, warnings}}`；保存 `quality/<submissionId>.json`、`previews/<submissionId>.html`。确定的公式损坏、异常控制字符等阻止该份远端校验和回写；诊断缺项警告不阻断，Agent 应核对证据后补齐或解释缺项，再查看预览。回写前仍核验当前结果，不能用旧校验绕过改稿检查，权限与用户授权沿用原流程。预览仅为本地基础 Markdown/KaTeX，不替代网页、手机端和 PDF 的最终显示验收；本增强为待发行源码，不代表已安装插件已更新。
+
 ## 并发、回滚与重试
 
 资料版本涵盖题单题目编号与顺序、题面答案、满分、计分模式、教练说明及人工原卷、解析文件；提交版本还涵盖原答卷、绑定记录、重批次数及教师复核状态。修改评分依据、重交答卷、换绑记录或人工复核后，旧结果不能直接导入。
@@ -52,6 +60,8 @@
 `CampExternalGradingMySqlTest` 通过临时 MySQL 8.4、真实 MyBatis、事务、HTTP Controller 和发布版 stdio MCP 完成端到端检查。测试仅允许显式指定 `127.0.0.1` 上名为 `grading_test` 的隔离库；依赖从现有备份导入的营队与班级、作业、测评、提交、阅卷记录和评分明细10张原表结构，不提供或执行生产表结构变更。测试会清空隔离库中的这10张表，禁止指向共享业务库。
 
 测试用纸保存在 `SpringBoot/CodeArena/src/test/resources/camp/external-grading`，全部为合成数据：两道物理题，一份7分答卷、一份含不可辨认答案的答卷。PDF 已逐页渲染核对。测试驱动使用固定金标准结果，验证资料下载、7分落库、异常题及总分留空、报告和作答证据保留、纯评测、原教练说明2048字符、回滚、并发去重、陈旧结果拒绝和教师复核保护；它不能评估真实手写识别准确率。认证、营队成员、题库和文件来源采用测试边界，数据库与阅卷持久化使用真实实现。
+
+多端报告排版另共用 `SpringBoot/CodeArena/src/test/resources/aigrade/report-rendering.md`：网页 Markdown/KaTeX、小程序真实 Markdown→mp-html→latex 管线与正式报告 Typst 编译服务均读取该合成样例，覆盖分式、根式、多行公式、原生定界符、表格、跨页及末段内容。`GradingReportRenderingTest` 在本机有Typst时真编译，并可通过 `-Dgrading.report.renderOutput=/绝对路径/样例.pdf` 保存供逐页查看。网页浏览器验收宽度为1280与390；小程序解析回归不等同于微信真机视觉验收，不代表真实手写识别质量已完成评估。
 
 准备好隔离库并在插件目录安装开发依赖、构建后，在 `SpringBoot/CodeArena` 执行：
 
