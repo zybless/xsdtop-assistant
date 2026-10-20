@@ -56,6 +56,12 @@ test('distributed stdio MCP advertises grading tools and the explicit commit bou
     child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n')
     const listed = await request('tools/list', {})
     for (const name of gradingTools) assert.ok(listed.tools.some(tool => tool.name === name), `missing runtime tool ${name}`)
+    for (const name of ['search_questions', 'get_question']) {
+      const tool = listed.tools.find(tool => tool.name === name)
+      assert.ok(tool, `missing teacher query tool ${name}`)
+      assert.equal(tool.annotations.readOnlyHint, true)
+      assert.equal(tool.annotations.destructiveHint, false)
+    }
     for (const family of ['camp', 'class']) {
       const commit = listed.tools.find(tool => tool.name === `commit_${family}_grading_results`)
       assert.equal(commit.inputSchema.properties.confirm.const, true)

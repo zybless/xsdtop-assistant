@@ -29,6 +29,8 @@ description: Download xsdtop class homework, class assessments, camp assessments
 
 写结果前读取 [结果格式](references/result-format.md) 和 [报告质量要求](references/report-quality.md)。先依据逐题证据写诊断，再归纳整卷表现；填实可确认的 `topicDirection`、`didWell`、`toImprove`，根因证据不足时不补造。`reportMd` 应让学生独立读懂这次表现和下一步做法，不能只把详细信息留在结构化字段里；教师专用的 `referenceDoubt` 不进入公开报告。
 
+多份答卷、同题多种解法或跨会话接续时，按 [评分一致性与复核案例](references/calibration.md) 对齐题号、版本和有效步骤；不以多数答案或先前批次的分数代替当前评分依据。
+
 每份结果保存为 `results/<submissionId>.json`，小批处理并随做随保存。使用 JSON 序列化器写文件，复杂公式放入正文的 `$...$` 或 `$$...$$`，保持原始作答转写忠实；报告正文不要重复写总分或逐题分数。当前协议不支持 `analysis`、`subItems` 等新增字段，不照搬网站内部输出格式。
 
 ## 校验和回写

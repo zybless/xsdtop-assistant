@@ -1,6 +1,6 @@
 {
   "name": "@xsdtop/xsdtop-assistant",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "xsdtop question-bank management, local grading and permission-controlled handout-lab assistant for Codex, Claude Code, and DeepSeek Harness",
   "license": "MIT",
   "repository": {
