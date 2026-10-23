@@ -1,6 +1,6 @@
 interface:
   display_name: "xsdtop 题库操作"
-  short_description: "查询与录入数理化题目，支持讲义预处理、配图公式校验、内容校对及标签复核"
+  short_description: "查询与录入数理化题目，支持讲义预处理、内容校对、标签复核与批量新增标签树"
   default_prompt: "Use $xsd-question-bank to organize and validate this paper before importing it into xsdtop."
 dependencies:
   tools:

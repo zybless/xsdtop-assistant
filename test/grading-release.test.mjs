@@ -62,6 +62,15 @@ test('distributed stdio MCP advertises grading tools and the explicit commit bou
       assert.equal(tool.annotations.readOnlyHint, true)
       assert.equal(tool.annotations.destructiveHint, false)
     }
+    const labelPreview = listed.tools.find(tool => tool.name === 'validate_label_import')
+    const labelCommit = listed.tools.find(tool => tool.name === 'commit_label_import')
+    assert.ok(labelPreview, 'missing label import preview')
+    assert.ok(labelCommit, 'missing label import commit')
+    assert.equal(labelPreview.annotations.readOnlyHint, true)
+    assert.equal(labelPreview.inputSchema.properties.nodes.maxItems, 5000)
+    assert.ok(labelPreview.inputSchema.properties.path)
+    assert.equal(labelCommit.annotations.idempotentHint, true)
+    assert.deepEqual(labelCommit.inputSchema.required, ['validationId'])
     for (const family of ['camp', 'class']) {
       const commit = listed.tools.find(tool => tool.name === `commit_${family}_grading_results`)
       assert.equal(commit.inputSchema.properties.confirm.const, true)

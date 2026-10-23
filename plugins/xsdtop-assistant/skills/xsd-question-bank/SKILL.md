@@ -1,6 +1,6 @@
 ---
 name: xsd-question-bank
-description: Query, organize, proofread, review labels for, and import xsdtop physics, mathematics, or chemistry questions and lists. Includes local LaTeX teaching-material preprocessing, figure and formula checks, and evidence-based review of existing content; online operations use the xsdtop tools.
+description: Query, organize, proofread, review labels for, and import xsdtop physics, mathematics, or chemistry questions and lists. Also batch-create label trees from spreadsheets or structured material. Includes local LaTeX preprocessing and content review; online operations use the xsdtop tools.
 ---
 
 # xsdtop 题库操作
@@ -48,6 +48,8 @@ Return complete executable SQL for the requested operation, including `INSERT`, 
 Do not mention SQL or database internals in ordinary conversations when the teacher did not request them.
 
 ## Manage questions, lists, groups, and containers
+
+For adding labels or importing a teacher's spreadsheet, outline, or tree into the label catalog, read [references/label-import.md](references/label-import.md). Use `validate_label_import` and `commit_label_import`; ordinary private-bank keys cannot create public labels. This is separate from assigning existing labels to questions.
 
 Use only the dedicated management tools for writes. Resolve import targets by name or a supplied link with `list_question_lists`; it is paginated and restricted to the current subject, tenant and writable ownership. If names match multiple lists, distinguish them before writing. Private keys support new lists and append only, not the public-bank management tools.
 
