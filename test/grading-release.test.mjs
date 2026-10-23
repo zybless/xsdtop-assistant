@@ -71,6 +71,20 @@ test('distributed stdio MCP advertises grading tools and the explicit commit bou
     assert.ok(labelPreview.inputSchema.properties.path)
     assert.equal(labelCommit.annotations.idempotentHint, true)
     assert.deepEqual(labelCommit.inputSchema.required, ['validationId'])
+    for (const name of ['get_label_edit_snapshot', 'preview_label_delete']) {
+      const tool = listed.tools.find(tool => tool.name === name)
+      assert.ok(tool, `missing label management tool ${name}`)
+      assert.equal(tool.annotations.readOnlyHint, true)
+    }
+    const editLabel = listed.tools.find(tool => tool.name === 'update_label')
+    assert.ok(editLabel.inputSchema.required.includes('expectedVersion'))
+    assert.ok(editLabel.inputSchema.required.includes('name'))
+    const deleteLabel = listed.tools.find(tool => tool.name === 'delete_label')
+    assert.equal(deleteLabel.inputSchema.properties.confirm.const, true)
+    assert.deepEqual(deleteLabel.inputSchema.required, ['validationId', 'confirm'])
+    assert.equal(deleteLabel.inputSchema.properties.labelId, undefined)
+    assert.equal(deleteLabel.annotations.destructiveHint, true)
+    assert.equal(deleteLabel.annotations.idempotentHint, true)
     for (const family of ['camp', 'class']) {
       const commit = listed.tools.find(tool => tool.name === `commit_${family}_grading_results`)
       assert.equal(commit.inputSchema.properties.confirm.const, true)

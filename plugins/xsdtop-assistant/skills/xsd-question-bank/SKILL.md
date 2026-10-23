@@ -1,6 +1,6 @@
 ---
 name: xsd-question-bank
-description: Query, organize, proofread, review labels for, and import xsdtop physics, mathematics, or chemistry questions and lists. Also batch-create label trees from spreadsheets or structured material. Includes local LaTeX preprocessing and content review; online operations use the xsdtop tools.
+description: Query, organize, proofread, review labels for, and import xsdtop physics, mathematics, or chemistry questions and lists. Also import label trees and edit or delete labels with separate permissions and impact confirmation. Includes local LaTeX preprocessing and content review; online operations use the xsdtop tools.
 ---
 
 # xsdtop 题库操作
@@ -50,6 +50,8 @@ Do not mention SQL or database internals in ordinary conversations when the teac
 ## Manage questions, lists, groups, and containers
 
 For adding labels or importing a teacher's spreadsheet, outline, or tree into the label catalog, read [references/label-import.md](references/label-import.md). Use `validate_label_import` and `commit_label_import`; ordinary private-bank keys cannot create public labels. This is separate from assigning existing labels to questions.
+
+For changing or deleting labels themselves, read [references/label-management.md](references/label-management.md). These require separate `label:edit` / `label:delete` capabilities and the bound account's matching website permissions. Always read an edit snapshot before changing a label. Before deletion, preview its impact, show the exact name, full path, child and question counts, and pause for explicit confirmation; only then call `delete_label` with that preview's validation ID and `confirm: true`.
 
 Use only the dedicated management tools for writes. Resolve import targets by name or a supplied link with `list_question_lists`; it is paginated and restricted to the current subject, tenant and writable ownership. If names match multiple lists, distinguish them before writing. Private keys support new lists and append only, not the public-bank management tools.
 
