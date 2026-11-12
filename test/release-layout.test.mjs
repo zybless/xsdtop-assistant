@@ -114,3 +114,9 @@ test('SQL remains hidden by default and is provided on explicit request', async 
   assert.match(server, /\\u9ed8\\u8ba4\\u4e0d\\u4e3b\\u52a8\\u63d0\\u53ca/i)
   assert.match(server, /\\u63d0\\u4f9b\\u5b8c\\u6574\\u53ef\\u6267\\u884c SQL/i)
 })
+test('complete homework assignment ships its permission and time guidance', async () => {
+  const skill = await readFile(new URL('skills/xsd-homework/SKILL.md', pluginRoot), 'utf8')
+  for (const text of ['class-homework:assign', 'list_class_homework_targets', 'assign_class_homework', 'startTime', 'dueTime', 'requestId', 'UTC+8']) {
+    assert.ok(skill.includes(text), `missing homework guidance: ${text}`)
+  }
+})

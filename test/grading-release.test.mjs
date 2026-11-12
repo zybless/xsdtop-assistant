@@ -21,7 +21,7 @@ test('release includes the local grading skill and result contract', async () =>
   assert.ok(manifest.files.includes('docs/camp-grading-design.md'))
 })
 
-test('distributed stdio MCP advertises grading tools and the explicit commit boundary', { timeout: 10000 }, async () => {
+test('distributed stdio MCP advertises grading and complete homework assignment contracts', { timeout: 10000 }, async () => {
   const child = spawn(process.execPath, [fileURLToPath(new URL('mcp-server/dist/server.mjs', plugin))], {
     stdio: ['pipe', 'pipe', 'pipe'],
     env: { ...process.env, XSDTOP_ACCESS_KEY: '', MINERU_API_TOKEN: '' }
@@ -91,6 +91,16 @@ test('distributed stdio MCP advertises grading tools and the explicit commit bou
       assert.equal(commit.annotations.destructiveHint, true)
       assert.equal(listed.tools.find(tool => tool.name === `validate_${family}_grading_results`).annotations.destructiveHint, false)
     }
+    const assignment = listed.tools.find(tool => tool.name === 'assign_class_homework')
+    assert.ok(assignment, 'missing complete homework assignment')
+    assert.equal(assignment.annotations.readOnlyHint, false)
+    assert.equal(assignment.annotations.idempotentHint, true)
+    for (const field of ['requestId', 'classId', 'questionListId', 'title', 'startTime', 'dueTime']) {
+      assert.ok(assignment.inputSchema.required.includes(field), `missing assignment field ${field}`)
+    }
+    const targets = listed.tools.find(tool => tool.name === 'list_class_homework_targets')
+    assert.equal(targets.annotations.readOnlyHint, true)
+    assert.deepEqual(targets.inputSchema.properties.kind.enum, ['classes', 'question-lists'])
     const download = listed.tools.find(tool => tool.name === 'download_class_grading_package')
     assert.ok(download.inputSchema.required.includes('taskType'))
     assert.deepEqual(download.inputSchema.properties.taskType.enum, ['assessments', 'homeworks'])
